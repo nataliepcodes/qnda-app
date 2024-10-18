@@ -41,10 +41,19 @@ $ heroku pg:psql <heroku-db-name> --app <heroku-app-name>
 # Source to fix libpq errors on macOS - https://github.com/orgs/Homebrew/discussions/3595
 
 # How to fix psycopg2 errors:
-# activate virtual environment: $ source .venv/bin/activate
-# check Python version: $ python --version
-# $ pip install psycopg2
-# $ pip install psycopg2-binary <-- the magic that fixed the error
-# $ pip show psycopg2
-# run the app: $ python app.py
+-activate virtual environment: $ source .venv/bin/activate
+-check Python version: $ python --version
+- $ pip install psycopg2
+- $ pip install psycopg2-binary <-- the magic that fixed the error
+- $ pip show psycopg2
+- run the app: $ python app.py
+NOTE: source ChatGPT 🙏
 
+# How to fix 'Aplication Error' on Heroku
+-check the logs via CLI: $ heroku logs --tail
+-if logs are are about Flask or other dependencies, reinstall and update requirements.txt
+-then:
+$ git add requirements.txt
+$ git commit -m "Add Flask to requirements.txt"
+$ git push heroku master
+NOTE: source ChatGPT 💛
