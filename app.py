@@ -108,13 +108,12 @@ def ask():
 
     # Taking form input and inserting into the questions.db
     if request.method == 'POST':
-        db.execute('INSERT INTO questions (question_text, asked_by_id, expert_id) VALUES (?, ?, ?)', [request.form['question'], user['id'], request.form['expert']])
-        db.commit()
+        db.execute('INSERT INTO questions (question_text, asked_by_id, expert_id) VALUES (%s, %s, %s)', (request.form['question'], user['id'], request.form['expert'], ))
         return redirect(url_for('index'))
     
     # Querying db for a list of experts to be listed in the form selection drop down
-    expert_cur = db.execute('SELECT id, name FROM users WHERE expert = 1')
-    expert_results = expert_cur.fetchall()
+    db.execute('SELECT id, name FROM users WHERE expert = True')
+    expert_results = db.fetchall()
 
     return render_template('ask.html', user=user, experts=expert_results) 
 
@@ -126,17 +125,17 @@ def question(question_id):
         return redirect(url_for('login'))
 
     db = get_db()
-    question_cur = db.execute('''SELECT 
-                                     questions.id, 
-                                     questions.question_text, 
-                                     questions.answer_text, 
-                                     askers.name as asker_name, 
-                                     experts.name as expert_name 
-                                 FROM questions 
-                                 JOIN users as askers ON askers.id = questions.asked_by_id 
-                                 JOIN users as experts ON experts.id = questions.expert_id 
-                                 WHERE questions.id = ?''', [question_id])
-    question_result = question_cur.fetchone()
+    db.execute('''SELECT 
+                      questions.id, 
+                      questions.question_text, 
+                      questions.answer_text, 
+                      askers.name as asker_name, 
+                      experts.name as expert_name 
+                  FROM questions 
+                  JOIN users as askers ON askers.id = questions.asked_by_id 
+                  JOIN users as experts ON experts.id = questions.expert_id 
+                  WHERE questions.id = %s''', (question_id, ))
+    question_result = db.fetchone()
 
     return render_template('question.html', user=user, question=question_result) 
 
@@ -148,18 +147,17 @@ def answer(question_id):
     if not user:
         return redirect(url_for('login'))
     
-    if user['expert'] == 0:
+    if not user['expert']:
         return redirect(url_for('index'))
     
     db = get_db()
     
     if request.method == 'POST':
-        db.execute('UPDATE questions SET answer_text = ? WHERE id = ?', [request.form['answer'], question_id])
-        db.commit()
+        db.execute('UPDATE questions SET answer_text = %s WHERE id = %s', (request.form['answer'], question_id, ))
         return redirect(url_for('unanswered'))
     
-    question_cur = db.execute('SELECT id, question_text FROM questions WHERE id = ?', [question_id])
-    question_result = question_cur.fetchone()
+    db.execute('SELECT id, question_text FROM questions WHERE id = %s', (question_id, ))
+    question_result = db.fetchone()
 
     return render_template('answer.html', user=user, question=question_result)  
 
@@ -171,15 +169,15 @@ def unanswered():
     if not user:
         return redirect(url_for('login'))
     
-    if user['expert'] == 0:
+    if not user['expert']:
         return redirect(url_for('index'))
     
     db = get_db()
-    questions_cur = db.execute('''SELECT questions.id, questions.question_text, users.name 
+    db.execute('''SELECT questions.id, questions.question_text, users.name 
                                   FROM questions 
                                   JOIN users on users.id = questions.asked_by_id 
-                                  WHERE questions.answer_text is null and questions.expert_id = ?''', [user['id']])
-    questions_results = questions_cur.fetchall()
+                                  WHERE questions.answer_text is null and questions.expert_id = %s''', (user['id'], ))
+    questions_results = db.fetchall()
 
     return render_template('unanswered.html', user=user, questions=questions_results)
 
