@@ -1,0 +1,23 @@
+*** ⭐️ HEROKU COMMANDS ⭐️ ***
+-- Install on macOS --
+brew tap heroku/brew && brew install heroku
+
+Source: https://devcenter.heroku.com/articles/heroku-cli#verify-your-installation
+
+-- Basic commands -- 
+heroku --version
+heroku login
+heroku login -i
+
+-- Create an app --
+cd ~/myapp
+heroku create
+
+-- Push changes to Heroku --
+git push heroku master
+
+-- Dependencies --
+Heroku does not use SQLite, uses PostgreSQL
+-Have a requirements.txt (to update use: $ pip freeze > requirements.txt)
+-use venv, install flask, psycopg2(for db), gunicorn (HTTP server)
+-create db in Heroku
