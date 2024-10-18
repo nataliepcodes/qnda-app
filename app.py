@@ -6,11 +6,14 @@ import os
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24) # generate random string of 24 characters
 
-# Close the db everytime a request ends
+# Close the curser and connection everytime a request ends
 @app.teardown_appcontext
 def close_db(error):
-    if hasattr(g, 'sqlite_db'):
-        g.sqlite_db.close()
+    if hasattr(g, 'postgres_db_cur'):
+        g.postgres_db_cur.close()
+
+    if hasattr(g, 'postgres_db_conn'):
+        g.postgres_db_conn.close()
 
 # Function for user session
 def get_current_user():
@@ -18,8 +21,8 @@ def get_current_user():
     if 'user' in session:
         user = session['user']
         db = get_db()
-        user_cur = db.execute('SELECT id, name, password, expert, admin FROM users WHERE name = ?', [user])
-        user_result = user_cur.fetchone()
+        db.execute('SELECT id, name, password, expert, admin FROM users WHERE name = %s', (user, ))
+        user_result = db.fetchone()
     
     return user_result
 
@@ -29,7 +32,7 @@ def index():
     user = get_current_user()
     
     db = get_db()
-    questions_cur = db.execute('''SELECT
+    db.execute('''SELECT
                                       questions.id as question_id, 
                                       questions.question_text, 
                                       askers.name as asker_name, 
@@ -40,7 +43,7 @@ def index():
                                   JOIN users as experts 
                                   ON experts.id = questions.expert_id 
                                   WHERE questions.answer_text is not null''')
-    question_result = questions_cur.fetchall()
+    question_result = db.fetchall()
 
     return render_template('home.html', user=user, answered_questions=question_result) 
 
@@ -53,8 +56,8 @@ def register():
         db = get_db()
 
         # Check if user exists
-        existing_user_cur = db.execute('SELECT id FROM users WHERE name = ?', [request.form['name']])
-        existing_user_result = existing_user_cur.fetchone()
+        db.execute('SELECT id FROM users WHERE name = %s', (request.form['name'], ))
+        existing_user_result = db.fetchone()
 
         if existing_user_result:
             return render_template('register.html', user=user, error='User already exists! Try to Login.') 
