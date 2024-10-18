@@ -42,13 +42,4 @@ def init_admin():
     db[1].close()
     db[0].close
 
-# Source to fix libpq errors on macOS - https://github.com/orgs/Homebrew/discussions/3595
-# How to fix psycopg2 errors:
-# activate virtual environment: $ source .venv/bin/activate
-# check Python version: $ python --version
-# $ pip install psycopg2
-# $ pip install psycopg2-binary <-- the magic that fixed the error
-# $ pip show psycopg2
-# run the app: $ python app.py
-
 
