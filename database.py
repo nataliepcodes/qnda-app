@@ -4,7 +4,7 @@ from psycopg2.extras import DictCursor
 
 def connect_db():
     # Added URI from Heroku
-    conn = psycopg2.connect('postgres://uelmv0cs53ceh8:p14088bb491a08e41ebe57c7da4ec0ed9e1fbafe8fb7b6e1f0050063807ee4441@ccaml3dimis7eh.cluster-czz5s0kz4scl.eu-west-1.rds.amazonaws.com:5432/d9r6pgeht3ff6q', cursor_factory=DictCursor)
+    conn = psycopg2.connect('postgres://uelmv0cs53ceh8:p5503511a46ec4d2ecc921261d03382977c5803730db5160b7b56c6cd9b47f06d@cackockmsmqaol.cluster-czz5s0kz4scl.eu-west-1.rds.amazonaws.com:5432/d1ba027rjll4kq', cursor_factory=DictCursor)
     conn.autocommit = True # This is optional. In Postgres the connection object and cursor object are separate, the commit is on the connection, and the queries are run on the cursor
     sql = conn.cursor() # Creates a cursor to run the commands
 
