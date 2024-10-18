@@ -33,6 +33,15 @@ def init_db():
     db[1].close()
     db[0].close()
 
+
+def init_admin():
+    db = connect_db()
+
+    db[1].execute('UPDATE users SET admin = True WHERE name = %s', ('admin', ))
+
+    db[1].close()
+    db[0].close
+
 # Source to fix libpq errors on macOS - https://github.com/orgs/Homebrew/discussions/3595
 # How to fix psycopg2 errors:
 # activate virtual environment: $ source .venv/bin/activate
