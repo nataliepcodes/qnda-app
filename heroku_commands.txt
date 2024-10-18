@@ -21,3 +21,13 @@ Heroku does not use SQLite, uses PostgreSQL
 -Have a requirements.txt (to update use: $ pip freeze > requirements.txt)
 -use venv, install flask, psycopg2(for db), gunicorn (HTTP server)
 -create db in Heroku
+
+-- Known macOS Errors and Fixes --
+# Source to fix libpq errors on macOS - https://github.com/orgs/Homebrew/discussions/3595
+# How to fix psycopg2 errors:
+# activate virtual environment: $ source .venv/bin/activate
+# check Python version: $ python --version
+# $ pip install psycopg2
+# $ pip install psycopg2-binary <-- the magic that fixed the error
+# $ pip show psycopg2
+# run the app: $ python app.py
