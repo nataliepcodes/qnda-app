@@ -13,6 +13,10 @@ $ heroku login -i
 $ cd ~/myapp
 $ heroku create
 
+-- Access existing app remotely --
+$ heroku git:remote -a <app-name>
+
+
 -- Push changes to Heroku --
 $ git push heroku master
 
@@ -21,6 +25,12 @@ Heroku does not use SQLite, uses PostgreSQL
 -Have a requirements.txt (to update use: $ pip freeze > requirements.txt)
 -use venv, install flask, psycopg2(for db), gunicorn (HTTP server)
 -create db in Heroku
+
+-- Check db via CLI --
+$ heroku pg:psql <heroku-db-name> --app <heroku-app-name>
+-to check tables use: $ \dt
+-to check each table, the usual SQL command applies: $ SELECT * FROM table_name;
+-to exit pg db, it's not .exit, and not exit(), and not :wq and not quit, it's: \q
 
 -- Known macOS Errors and Fixes --
 # Heroku login
