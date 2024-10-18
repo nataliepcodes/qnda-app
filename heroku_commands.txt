@@ -23,7 +23,13 @@ Heroku does not use SQLite, uses PostgreSQL
 -create db in Heroku
 
 -- Known macOS Errors and Fixes --
+# Heroku login
+-if get an IP mismatch error, login with -i in CLI: $ heroku login -i
+-if MFA enabled, generate an authorization token for API access, as per below SO source:
+ https://stackoverflow.com/questions/63363085/ip-address-mismatch-on-signing-into-heroku-cli
+
 # Source to fix libpq errors on macOS - https://github.com/orgs/Homebrew/discussions/3595
+
 # How to fix psycopg2 errors:
 # activate virtual environment: $ source .venv/bin/activate
 # check Python version: $ python --version
@@ -31,3 +37,4 @@ Heroku does not use SQLite, uses PostgreSQL
 # $ pip install psycopg2-binary <-- the magic that fixed the error
 # $ pip show psycopg2
 # run the app: $ python app.py
+
