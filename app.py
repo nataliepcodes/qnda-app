@@ -33,16 +33,16 @@ def index():
     
     db = get_db()
     db.execute('''SELECT
-                                      questions.id as question_id, 
-                                      questions.question_text, 
-                                      askers.name as asker_name, 
-                                      experts.name as expert_name 
-                                  FROM questions 
-                                  JOIN users as askers 
-                                  ON askers.id = questions.asked_by_id 
-                                  JOIN users as experts 
-                                  ON experts.id = questions.expert_id 
-                                  WHERE questions.answer_text is not null''')
+                      questions.id as question_id, 
+                      questions.question_text, 
+                      askers.name as asker_name, 
+                      experts.name as expert_name 
+                  FROM questions 
+                  JOIN users as askers 
+                  ON askers.id = questions.asked_by_id 
+                  JOIN users as experts 
+                  ON experts.id = questions.expert_id 
+                  WHERE questions.answer_text is not null''')
     question_result = db.fetchall()
 
     return render_template('home.html', user=user, answered_questions=question_result) 
@@ -62,9 +62,8 @@ def register():
         if existing_user_result:
             return render_template('register.html', user=user, error='User already exists! Try to Login.') 
 
-        hashed_password = generate_password_hash(request.form['password'], method='sha256')
-        db.execute('INSERT INTO users (name, password, expert, admin) VALUES (?, ?, ?, ?)', [request.form['name'], hashed_password, '0', '0'])
-        db.commit()
+        hashed_password = generate_password_hash(request.form['password'], method='pbkdf2:sha256')
+        db.execute('INSERT INTO users (name, password, expert, admin) VALUES (%s, %s, %s, %s)', (request.form['name'], hashed_password, '0', '0', ))
         #to test: return '<h1>Name: {}, Password: {}</h1>'.format(request.form['name'], request.form['password'])
         session['user'] = request.form['name']
 
@@ -81,8 +80,8 @@ def login():
         db =get_db()
         name = request.form['name']
         password = request.form['password']
-        user_cur = db.execute('SELECT id, name, password FROM users WHERE name = ?', [name])
-        user_result = user_cur.fetchone()
+        db.execute('SELECT id, name, password FROM users WHERE name = %s', (name, ))
+        user_result = db.fetchone()
 
         # Check if the name exists
         if user_result:
@@ -191,13 +190,13 @@ def users():
     if not user:
         return redirect(url_for('login'))
     
-    if user['admin'] == 0:
+    if not user['admin']:
         return redirect(url_for('index'))
 
     # Query all the users in the db and pass the list to the users template
     db = get_db()
-    users_cur = db.execute('SELECT id, name, expert, admin FROM users')
-    users_results = users_cur.fetchall()
+    db.execute('SELECT id, name, expert, admin FROM users')
+    users_results = db.fetchall()
 
     return render_template('users.html', user=user, users=users_results)
 
@@ -208,20 +207,18 @@ def promote(user_id):
     if not user:
         return redirect(url_for('login'))
     
-    if user['admin'] == 0:
+    if not user['admin']:
         return redirect(url_for('index'))
     
     db = get_db()
 
-    user_cur = db.execute('SELECT id, expert FROM users WHERE id = ?', [user_id])
-    user_result = user_cur.fetchone()
+    db.execute('SELECT id, expert FROM users WHERE id = %s', (user_id, ))
+    user_result = db.fetchone()
 
-    if user_result['expert'] == 1:
-        db.execute('UPDATE users SET expert = 0 WHERE id = ?', [user_id])
-        db.commit()
+    if user_result['expert']:
+        db.execute('UPDATE users SET expert = False WHERE id = %s', (user_id, ))
     else:
-        db.execute('UPDATE users SET expert = 1 WHERE id = ?', [user_id])
-        db.commit()
+        db.execute('UPDATE users SET expert = True WHERE id = %s', (user_id, ))
 
     return redirect(url_for('users'))
 
