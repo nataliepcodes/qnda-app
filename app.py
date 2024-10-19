@@ -10,14 +10,6 @@ app.config['SESSION_COOKIE_SECURE'] = True
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
-# TODO: 
-# Fix issue between local (route 5000) and production (Heroku) environments
-# Issue statement: 
-# -basic user can log in but CANNOT open the links to answered questions in production (Heroku) environment
-# -basic user can log in and CAN open the links to answered questions in local (5000) environment
-# -admin user can log in but CANNOT open the links to USERS SETUP in production (Heroku) environment
-# -admin user can log in and CAN  open the links to USERS SETUP in local (5000) environment
-
 
 # Close the curser and connection everytime a request ends
 @app.teardown_appcontext
