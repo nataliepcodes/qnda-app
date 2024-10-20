@@ -66,3 +66,9 @@ Solutions:
 - use Heroku configuration and import it from environment variable - learn how to do that here:
 https://stackoverflow.com/questions/73509882/how-to-configure-using-heroku-environment-variables-from-flask-app
 https://devcenter.heroku.com/articles/config-vars
+
+# Create a random secret key and store in Heroku app settings
+- to create: 
+go to CLI, type $ python
+>> import os
+>> os.urandom(24) <-this will generate a 24 char string, store it in the heroku app setting
