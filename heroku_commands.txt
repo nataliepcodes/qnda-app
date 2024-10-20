@@ -57,3 +57,12 @@ $ git add requirements.txt
 $ git commit -m "Add Flask to requirements.txt"
 $ git push heroku master
 NOTE: source ChatGPT 💛
+
+# How to fix secret keys/multiple dynos issue which keeps re-logging the user
+The issue is that each dyno has it's own secret key that is generated (source code by the os.urandom()), 
+thus same user can bounce between dyno's (loged in on one and not the other)
+Solutions:
+- have a static secret key (DO NOT have secret keys in the source code) - find another solution
+- use Heroku configuration and import it from environment variable - learn how to do that here:
+https://stackoverflow.com/questions/73509882/how-to-configure-using-heroku-environment-variables-from-flask-app
+https://devcenter.heroku.com/articles/config-vars
