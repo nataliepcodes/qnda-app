@@ -2,9 +2,9 @@ from flask import Flask, render_template, g, request, session, redirect, url_for
 from database import get_db
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
-from dotenv import load_dotenv # to run env variables locally
+#from dotenv import load_dotenv # to run env variables locally
 
-load_dotenv()
+#load_dotenv() # to run env variables locally
 
 app = Flask(__name__)
 

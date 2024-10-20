@@ -1,10 +1,10 @@
 from flask import g
 import psycopg2
 from psycopg2.extras import DictCursor 
-from dotenv import load_dotenv # to run env variables locally
+#from dotenv import load_dotenv # to run env variables locally
 import os
 
-load_dotenv() 
+#load_dotenv() # to run env variables locally
 database_url = os.getenv('DATABASE_URL')
 
 def connect_db():
