@@ -1,10 +1,16 @@
 from flask import g
 import psycopg2
 from psycopg2.extras import DictCursor 
+from dotenv import load_dotenv # to run env variables locally
+import os
+
+load_dotenv() 
+database_url = os.getenv('DATABASE_URL')
+print(database_url)
 
 def connect_db():
     # Added URI from Heroku
-    conn = psycopg2.connect('postgres://uelmv0cs53ceh8:p5503511a46ec4d2ecc921261d03382977c5803730db5160b7b56c6cd9b47f06d@cackockmsmqaol.cluster-czz5s0kz4scl.eu-west-1.rds.amazonaws.com:5432/d1ba027rjll4kq', cursor_factory=DictCursor)
+    conn = psycopg2.connect(database_url, cursor_factory=DictCursor)
     conn.autocommit = True # This is optional. In Postgres the connection object and cursor object are separate, the commit is on the connection, and the queries are run on the cursor
     sql = conn.cursor() # Creates a cursor to run the commands
 
