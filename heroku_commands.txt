@@ -83,4 +83,11 @@ https://12factor.net/config
 -- create .env file and save DB URL variable there - git ignore this one :)
 -- add from dotenv import load_dotenv and load_dotenv() in the source code file to access the .env variable
 
+# Heroku Settings
+NOTE there are 2 places called Settings and 2 places for config vars
+-- find Review app config vars & Test run config vars: 
+go to the dashboard,  select app-name-env, go to Settings
+
+-- to find Config vars with DATABASE_URL and to add other vars for the whole/main app: 
+go to the dashboard, select app-name (note it's without -env), go to Settings
 
