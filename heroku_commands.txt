@@ -72,3 +72,15 @@ https://devcenter.heroku.com/articles/config-vars
 go to CLI, type $ python
 >> import os
 >> os.urandom(24) <-this will generate a 24 char string, store it in the heroku app setting
+
+# 12 Factor App Rules
+https://12factor.net/
+https://12factor.net/config
+
+# Update DB URL and set Heroku variables
+-- check db URL via CL: $ heroku config:get DATABASE_URL --app your-app-name
+-- to use DB locally install: $ pip install python-dotenv
+-- create .env file and save DB URL variable there - git ignore this one :)
+-- add from dotenv import load_dotenv and load_dotenv() in the source code file to access the .env variable
+
+
