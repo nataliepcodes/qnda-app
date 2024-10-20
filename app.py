@@ -2,9 +2,17 @@ from flask import Flask, render_template, g, request, session, redirect, url_for
 from database import get_db
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
+from dotenv import load_dotenv # to run env variables locally
+
+load_dotenv()
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.urandom(24) # generate random string of 24 characters
+
+# Environment variable for secret key
+secret_key = os.getenv('SECRET_KEY')
+
+# Setting app config variable for secret key
+app.config['SECRET_KEY'] = secret_key 
 
 
 # Close the curser and connection everytime a request ends
