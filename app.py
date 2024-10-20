@@ -6,10 +6,6 @@ import os
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24) # generate random string of 24 characters
 
-app.config['SESSION_COOKIE_SECURE'] = True
-app.config['SESSION_COOKIE_HTTPONLY'] = True
-app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
-
 
 # Close the curser and connection everytime a request ends
 @app.teardown_appcontext
