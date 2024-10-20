@@ -1,10 +1,11 @@
 # Ignore virtual environments
 .venv/
+.env
 
 # Ignore Python cache files
 __pycache__/
 *.py[cod]
-
+4l4
 # Databases
 .db
 *.sqlite
