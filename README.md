@@ -14,5 +14,3 @@ All three types of users can register, login, logout, and see a list of answered
 ## Specification
 
 HTML, CSS, Flask, Python, PostgreSQL
-
-Deployed on Heroku: [QnA app](https://qnda-app-720ed0376dc9.herokuapp.com/)
