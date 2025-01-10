@@ -13,5 +13,5 @@ All three types of users can register, login, logout, and see a list of answered
 
 ## Specification
 
-HTML, CSS, Flask, Python, PostgreSQL
+HTML, CSS, Flask, Python, PostgreSQL \
 Deployed on PythonAnywhere: [QnA App](https://nataliepcodes.pythonanywhere.com/)
